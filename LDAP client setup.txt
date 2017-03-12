@@ -1,0 +1,22 @@
+LDAP Client-side Configuration.
+
+#####Install these packages.
+
+openldap.x86_64
+openldap-clients.x86_64
+
+#####Issue below command. This also enable auto-creation of home-directories when LDAP user#### 
+#####logs-in for the first time. Make sure of the double hyphens here. ####
+#####Wrong syntax is quite likely to happen. Double check the syntax.####
+
+[root@client migrationtools]# authconfig --enableldap --enableldapauth --ldapserver=IP_addr_of_LDAP_server --ldapbasedn="dc=shashank,dc=com" --enablemkhomedir --update
+
+
+#####Test LDAP Client by logging into LDAP accounts.###
+
+
+Restart nslcd & nscd services. (In case you have caching DNS server)
+
+Caveats – Sometimes you may not be able to login to client machines with LDAP id even after performing above client side steps. 
+In that case, try restarting nslcd & nscd services (in case of cached DNS). 
+Also, issue authconfig-tui command to check if details are correct. Restart nslcd & nscd services. It will work 😉 🙂

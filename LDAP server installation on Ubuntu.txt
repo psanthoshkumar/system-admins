@@ -1,0 +1,62 @@
+Step 1: Login to Root and change the Hostname
+#su -
+give the password
+Changing the Hostname:
+#gedit /etc/hostname
+give the name: eg. server.ldap.com
+Save the file
+Reboot the machine
+Step 2: Install OpenLDAP
+#apt-get install slapd ldap-utils
+Give the Administrator Password/Root Password
+Re-Enter the Password of Administrator/Root
+Step 3: Configure OpenLDAP
+open the file
+#gedit /etc/ldap/ldap.conf
+Make sure the file looks as follows:
+#
+# LDAP Defaults
+#
+# See ldap.conf(5) for details
+# This file should be world readable but not world writable.
+BASE dc=ldap,dc=com
+URI ldap://localhost:389
+#SIZELIMIT 12
+#TIMELIMIT 15
+#DEREF never
+# TLS certificates (needed for GnuTLS)
+TLS_CACERT /etc/ssl/certs/ca-certificates.crt
+Save the file and exit
+Step 4: Reconfigure the slapd with the updated values
+#dpkg-reconfigure slapd
+Select "No" and Press Enter
+Enter the DNS Domain Name
+ldap.com
+Enter the Organization Name: Enter any name
+e.g. Anand Software
+Enter the LDAP Admin Password
+Select the Backend Database
+Choose the Default Only
+On the next screen select "No"
+Click Yes to Move the Old Database
+Select "No" under LDAPv2 Protocol
+Step 5: Test the openLDAP
+#ldapsearch -x
+PART-B LDAP Server Administration
+Install phpldapadmin Package
+#apt-get install phpldapadmin
+#gedit /etc/phpldapadmin/config.php
+1. Edit the following value
+Set your LDAP server name 
+$servers->setValue('server','name', Anand LDAP Server');
+Set your LDAP server IP address 
+$servers->setValue('server','host','IP-Address');
+Set Server domain name
+$servers->setValue('server','base',array('dc=ldap,dc=com'));
+Set Server domain name again
+$servers->setValue('login','bind_id','cn=admin,dc=ldap,dc=com');
+$config->custom->appearance['hide_template_warning'] = true;
+Exit the file
+#systemctl restart apache2
+Open Web Browswer
+http://IP-Address/phpldapadmin
