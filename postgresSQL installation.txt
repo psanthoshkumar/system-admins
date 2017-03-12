@@ -11,3 +11,20 @@ chkconfig postgresql on
 # Yum repo##
 
 yum install http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-2.noarch.rpm
+
+
+###configurations####
+
+#Info need to verify####
+##File1###
+Step # 1: Allow remote IP address to access PostgreSQL
+You need to open file called /var/lib/pgsql/data/pg_hba.conf. Login as postgres user using su command:
+$ su - postgres
+$ vi /var/lib/pgsql/data/pg_hba.conf
+
+	host all all 192.168.1.0 255.255.255.0 trust
+
+##File2###
+
+$ vi /var/lib/pgsql/data/postgresql.conf
+listen_addresses='*' 	
